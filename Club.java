@@ -14,15 +14,18 @@ public class Club {
 		name = createName();
 		members = createMembers(); 
 	}
+	
+	public ArrayList<Member> getMembers(){
+		return this.members;
+	}
 
-	public ArrayList<Member> createMembers() {
+	private ArrayList<Member> createMembers() {
 
 		//create arraylist to store members
 		ArrayList<Member> members = new ArrayList<Member>();
 
 		//use ID to find club using searchMembers(), return String
 		String memb = "";
-
 
 		try {
 			memb = searchMembers();
@@ -38,7 +41,7 @@ public class Club {
 		return parseMembers(memb);
 	}
 
-	public String createName(){
+	private String createName(){
 
 		//use ID to find club, return String
 		String name = "";
@@ -54,11 +57,11 @@ public class Club {
 			e.printStackTrace();
 		}
 
-
+		//parse query result to find club name
 		return parseName(name);
 	}
 
-	public String searchMembers() throws MalformedURLException, IOException {
+	private String searchMembers() throws MalformedURLException, IOException {
 
 		//Create URL
 		URL query = new URL("http://www.strava.com/api/v1/clubs/" + id + "/members");
@@ -78,7 +81,7 @@ public class Club {
 		return URLread;
 	}
 
-	public String searchName() throws MalformedURLException, IOException {
+	private String searchName() throws MalformedURLException, IOException {
 
 		//Create URL
 		URL query = new URL("http://www.strava.com/api/v1/clubs/" + this.id);
@@ -94,11 +97,11 @@ public class Club {
 		while((inputLine = in.readLine()) != null){
 			URLread = URLread + inputLine;
 		}
-
+		
 		return URLread;
 	}
 
-	public ArrayList<Member> parseMembers(String s){
+	private ArrayList<Member> parseMembers(String s){
 
 		//check for empty string
 		if (s.equals("") || s == null) {
@@ -137,6 +140,9 @@ public class Club {
 			String name = s.substring(startName, endName);
 			members.add(new Member(Integer.parseInt(num), name));
 			
+			//Used for Testing Purposes
+			//System.out.println("Added new Member" + name + ": " + num);
+			
 			//trim substring to find next member
 			s = s.substring(endName + 2, s.length());
 		}
@@ -144,7 +150,7 @@ public class Club {
 		return members;
 	}
 
-	public String parseName(String s) {
+	private String parseName(String s) {
 		
 		//check for empty string
 		if (s.equals("") || s == null) {

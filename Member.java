@@ -10,6 +10,8 @@ public class Member {
 	private int id;
 	private String name;
 	private ArrayList<Ride> rides;
+	private double elevationGain;
+	private int numRides;
 
 	//"query to get rides for competition: http://www.strava.com/api/v1/rides?athleteId="+"startDate=2013-03-01"
 
@@ -17,9 +19,37 @@ public class Member {
 		id = i;
 		name = s;
 		rides = createRides();
+		elevationGain = findElevation(); 
+		numRides = rides.size();
+	}
+	
+	public String getName() {
+		return this.name;
+	}
+	
+	public double getElevation(){
+		return this.elevationGain;
+	}
+	
+	public int getNumRides(){
+		return this.numRides;
+	}
+	
+	private double findElevation() {
+		
+		//loop through rides, sum elevation gain
+		double elevation = 0.0;
+		
+		for (Ride r : this.rides) {
+			elevation = elevation + r.getElevation();
+		}
+		
+		return elevation;
 	}
 
-	public ArrayList<Ride> createRides(){
+	private ArrayList<Ride> createRides(){
+		
+		//query rides, return results as string
 		String ridesString = "";
 
 		
@@ -34,27 +64,31 @@ public class Member {
 		}
 		 
 
-
+		//parse query result to create an array of Rides
 		return parseRides(ridesString);
 	}
 
-	public String searchRides() throws MalformedURLException, IOException {
+	private String searchRides() throws MalformedURLException, IOException {
 
 		String fullquery = "";
 		String URLread = "";
+		
+		//use offset to ensure that all rides are obtained 
 		int offset = 0;
-
+		
+		//build query, continue looping through offsets until empty set is returned.
 		while (! URLread.equals("{\"rides\":[]}")){
 			
 			if (URLread.equals("{\"error\":\"Invalid athleteId\"}")) {
 				break;
 			}
 			
+			//add new query results to existing results
 			fullquery = fullquery + URLread;
 			URLread = "";
 
 			//Create URL
-			URL query = new URL("http://www.strava.com/api/v1/rides?athleteId="+this.id+"&offset=" + offset);
+			URL query = new URL("http://www.strava.com/api/v1/rides?athleteId="+this.id+"&startDate=2013-03-01&offset=" + offset);
 
 			//Create Reader
 			BufferedReader in = new BufferedReader(
@@ -72,7 +106,8 @@ public class Member {
 
 		return fullquery;
 	}
-	public ArrayList<Ride> parseRides(String s){
+	
+	private ArrayList<Ride> parseRides(String s){
 
 		//check for empty string
 		if (s.equals("") || s == null) {
@@ -90,9 +125,6 @@ public class Member {
 		int startID;
 		int endID;
 
-		//trim string to be only members
-		//s = s.substring(s.indexOf("["), s.lastIndexOf("]")+1);
-
 		while (s.indexOf("\"id\":") >= 0) {
 			
 			//find substring of id
@@ -102,6 +134,7 @@ public class Member {
 			//parse id to number, create new member
 			String num = s.substring(startID,endID);
 			members.add(new Ride(Integer.parseInt(num)));
+			//System.out.println("Added new Ride " + num);
 			
 			//trim substring to find next member
 			s = s.substring(endID, s.length());
@@ -117,4 +150,6 @@ public class Member {
 	public void printRides(){
 		System.out.println(this.rides);
 	}
+	
+
 }
