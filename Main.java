@@ -12,7 +12,7 @@ public class Main {
 		// TODO Auto-generated method stub
 		
 		//create club (use 15 for demo)
-		Club c = new Club(69);
+		Club c = new Club(15);
 		
 		//Get list of all members from the club, and sort list by elevation
 		ArrayList<Member> members = c.getMembers();
