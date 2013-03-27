@@ -134,7 +134,7 @@ public class Member {
 			//parse id to number, create new member
 			String num = s.substring(startID,endID);
 			members.add(new Ride(Integer.parseInt(num)));
-			System.out.println("Added new Ride: " + num);
+			//System.out.println("Added new Ride: " + num);
 			
 			//trim substring to find next member
 			s = s.substring(endID, s.length());
