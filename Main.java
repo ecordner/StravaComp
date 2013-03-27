@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class Main {
@@ -11,7 +12,7 @@ public class Main {
 		// TODO Auto-generated method stub
 		
 		//create club (use 15 for demo)
-		Club c = new Club(15);
+		Club c = new Club(69);
 		
 		//Get list of all members from the club, and sort list by elevation
 		ArrayList<Member> members = c.getMembers();
@@ -41,6 +42,9 @@ public class Main {
 		System.out.println(sorted);
 		**/
 		
+		DecimalFormat df = new DecimalFormat();
+		df.setMaximumFractionDigits(0);
+		
 		//Print results
 		int i = 1;
 		for (Member m : sortedMembers) {
@@ -54,7 +58,7 @@ public class Main {
 				avg = elevation / rides;
 			}
 			
-			System.out.println(i + ": " + m.getName() + "     Elevation Gained: " + elevation + "     Rides: " + rides + "     Average Elevation Gain per Ride: " + avg);
+			System.out.println(i + ": " + m.getName() + "     Elevation Gained: " + df.format(elevation) + "     Rides: " + rides + "     Average Elevation Gain per Ride: " + df.format(avg));
 			i++;
 		}
 		

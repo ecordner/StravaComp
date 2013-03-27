@@ -139,6 +139,7 @@ public class Club {
 			String num = s.substring(startID,endID);
 			String name = s.substring(startName, endName);
 			members.add(new Member(Integer.parseInt(num), name));
+			//System.out.println("Added new member: " + name + ", " + num);
 			
 			//Used for Testing Purposes
 			//System.out.println("Added new Member" + name + ": " + num);
